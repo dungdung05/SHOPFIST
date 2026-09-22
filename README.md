@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EStore - Chức năng Đăng ký / Đăng nhập / Hồ sơ / Đăng xuất (Java Web)
 
 Project này bổ sung chức năng **Đăng ký, Đăng nhập, Hồ sơ cá nhân, Đăng xuất**
@@ -96,3 +97,7 @@ Menu "Tài khoản" trên header (`header.jsp`) tự động đổi:
   <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   ```
   ở đầu file, rồi thay khối `<!-- Top bar Start --> ... <!-- Nav Bar End -->` bằng `<%@ include file="header.jsp" %>` giống như đã làm với `index.jsp`.
+=======
+# SHOPFIST
+webbanhang
+>>>>>>> a5b9c531675b1f3df47520f8820a93898a076432
