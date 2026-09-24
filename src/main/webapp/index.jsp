@@ -463,7 +463,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
-                            <h2>Get in Touch</h2>
+                            <h2>Liên Hệ</h2>
                             <div class="contact-info">
                                 <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
                                 <p><i class="fa fa-envelope"></i>email@example.com</p>
@@ -474,7 +474,7 @@
                     
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
-                            <h2>Follow Us</h2>
+                            <h2>Theo dõi</h2>
                             <div class="contact-info">
                                 <div class="social">
                                     <a href=""><i class="fab fa-twitter"></i></a>
@@ -489,15 +489,14 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
-                            <h2>Company Info</h2>
+                            <h2>Thông tin công ty</h2>
                             <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Condition</a></li>
+                                <li><a href="#">Về chúng tôi</a></li>
+                                <li><a href="#">Chính sách</a></li>
+                                <li><a href="#">Điều khoản</a></li>
                             </ul>
                         </div>
                     </div>
-
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
                             <h2>Purchase Info</h2>

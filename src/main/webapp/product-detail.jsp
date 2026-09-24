@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -84,13 +85,13 @@
 
                             <div class="pd-meta">
                                 <span class="pd-rating">
-                                    <b>${product.rating}</b>
+                                    <b><fmt:formatNumber value="${avgRating}" maxFractionDigits="1"/></b>
                                     <c:forEach begin="1" end="5" varStatus="s">
-                                        <i class="fa fa-star ${s.index <= product.rating ? '' : 'pd-star-empty'}"></i>
+                                        <i class="fa fa-star ${s.index <= avgRating ? '' : 'pd-star-empty'}"></i>
                                     </c:forEach>
                                 </span>
                                 <span class="pd-sep">|</span>
-                                <span><b>${product.reviewCount}</b> Đánh Giá</span>
+                                <span><b>${reviewCount}</b> Đánh Giá</span>
                                 <span class="pd-sep">|</span>
                                 <span>Đã Bán <b>${product.soldCount}</b></span>
                             </div>
@@ -217,6 +218,68 @@
             </div>
         </div>
         <!-- Description End -->
+
+        <!-- Reviews Start -->
+        <div class="pd-description" id="reviews">
+            <div class="container-fluid">
+                <h2>Đánh Giá &amp; Bình Luận (${reviewCount})</h2>
+
+                <!-- Form gửi đánh giá -->
+                <c:choose>
+                    <c:when test="${canReview}">
+                        <form method="post" action="${pageContext.request.contextPath}/review" class="mb-4" style="max-width:600px;">
+                            <input type="hidden" name="productId" value="${product.id}">
+                            <div class="form-group">
+                                <label>Chấm điểm:</label><br>
+                                <c:forEach begin="1" end="5" varStatus="s">
+                                    <label style="margin-right:8px;">
+                                        <input type="radio" name="rating" value="${s.index}" ${s.index == 5 ? 'checked' : ''} required> ${s.index} <i class="fa fa-star"></i>
+                                    </label>
+                                </c:forEach>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="comment" class="form-control" rows="3" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required></textarea>
+                            </div>
+                            <button type="submit" class="pd-btn pd-btn-solid">Gửi Đánh Giá</button>
+                        </form>
+                    </c:when>
+                    <c:when test="${reviewBlockReason == 'login'}">
+                        <p class="text-muted">
+                            <a href="${pageContext.request.contextPath}/login?redirect=${pageContext.request.contextPath}/product-detail?id=${product.id}">Đăng nhập</a>
+                            để đánh giá sản phẩm này.
+                        </p>
+                    </c:when>
+                    <c:when test="${reviewBlockReason == 'not-purchased'}">
+                        <p class="text-muted">Bạn cần mua sản phẩm này trước khi có thể đánh giá.</p>
+                    </c:when>
+                    <c:when test="${reviewBlockReason == 'already-reviewed'}">
+                        <p class="text-muted">Bạn đã đánh giá sản phẩm này rồi. Cảm ơn bạn!</p>
+                    </c:when>
+                </c:choose>
+
+                <!-- Danh sách đánh giá đã có -->
+                <c:if test="${empty reviews}">
+                    <p class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>
+                </c:if>
+                <c:forEach var="rv" items="${reviews}">
+                    <div style="border-top:1px solid #eee; padding:15px 0;">
+                        <div>
+                            <b>${rv.reviewerName}</b>
+                            <span style="margin-left:8px;">
+                                <c:forEach begin="1" end="5" varStatus="s">
+                                    <i class="fa fa-star ${s.index <= rv.rating ? '' : 'pd-star-empty'}"></i>
+                                </c:forEach>
+                            </span>
+                            <small class="text-muted" style="margin-left:8px;">
+                                <fmt:formatDate value="${rv.createdAt}" pattern="dd/MM/yyyy"/>
+                            </small>
+                        </div>
+                        <p class="mb-0" style="margin-top:6px;">${rv.comment}</p>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+        <!-- Reviews End -->
 
         <!-- Related Products Start -->
         <c:if test="${not empty relatedProducts}">

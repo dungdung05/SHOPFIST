@@ -116,3 +116,21 @@ CREATE TABLE IF NOT EXISTS order_items (
     quantity     INT NOT NULL,
     CONSTRAINT fk_orderitem_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
 );
+
+-- ==========================================================
+-- Đánh giá / bình luận sản phẩm. Chỉ cho phép đánh giá nếu tài khoản đó đã
+-- từng mua sản phẩm (kiểm tra qua order_items, xem ReviewDAO#hasPurchased).
+-- Mỗi user chỉ đánh giá 1 lần / 1 sản phẩm (unique key bên dưới).
+-- ==========================================================
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    user_id    INT NOT NULL,
+    rating     TINYINT NOT NULL,   -- 1 đến 5 sao
+    comment    VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_review_user_product (product_id, user_id),
+    CONSTRAINT fk_review_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    CONSTRAINT fk_review_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
