@@ -17,8 +17,9 @@
         <div class="alert alert-danger">${error}</div>
     </c:if>
 
-    <form method="post" action="${pageContext.request.contextPath}/admin/products">
+    <form method="post" action="${pageContext.request.contextPath}/admin/products" enctype="multipart/form-data">
         <input type="hidden" name="id" value="${product.id}">
+        <input type="hidden" name="currentImage" value="${product.imageFileName}">
 
         <div class="form-group">
             <label>Tên Sản Phẩm <span class="text-danger">*</span></label>
@@ -48,10 +49,19 @@
                 </datalist>
             </div>
             <div class="form-group col-md-6">
-                <label>Tên File Ảnh</label>
-                <input type="text" class="form-control" name="image" value="${product.imageFileName}"
-                       placeholder="VD: product-1.jpg">
-                <small class="form-text text-muted">Ảnh cần đặt sẵn trong thư mục <code>webapp/img/</code>.</small>
+                <label>Ảnh Sản Phẩm</label>
+                <c:if test="${not empty product.imageFileName}">
+                    <div class="mb-2">
+                        <img id="currentImagePreview" src="${pageContext.request.contextPath}/img/${product.imageFileName}"
+                             alt="Ảnh hiện tại" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">
+                        <small class="form-text text-muted">Ảnh hiện tại — chọn ảnh mới bên dưới nếu muốn đổi.</small>
+                    </div>
+                </c:if>
+                <c:if test="${empty product.imageFileName}">
+                    <img id="currentImagePreview" src="" alt="" style="display:none;width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">
+                </c:if>
+                <input type="file" class="form-control-file" name="imageFile" accept="image/*" onchange="previewSelectedImage(this)">
+                <small class="form-text text-muted">Bỏ trống nếu không muốn đổi ảnh.</small>
             </div>
         </div>
 
@@ -64,5 +74,17 @@
         <a href="${pageContext.request.contextPath}/admin/products" class="btn btn-secondary">Huỷ</a>
     </form>
 </div>
+
+<script>
+    // Xem trước ảnh vừa chọn ngay trên form, chưa cần lưu mới thấy.
+    function previewSelectedImage(input) {
+        if (!input.files || !input.files[0]) {
+            return;
+        }
+        var preview = document.getElementById('currentImagePreview');
+        preview.src = URL.createObjectURL(input.files[0]);
+        preview.style.display = 'inline-block';
+    }
+</script>
 
 <%@ include file="_footer.jsp" %>
